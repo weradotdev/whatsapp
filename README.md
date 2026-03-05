@@ -19,6 +19,27 @@ npm run dev
 
 By default the server listens on port 3000. Set `PORT` to change it.
 
+### Run with PM2
+
+From the **project root** (not `services/whatsapp`), use the ecosystem file so PM2 loads env from the root `.env`:
+
+```bash
+# Start
+pm2 start ecosystem.config.cjs
+
+# View logs
+pm2 logs wera-whatsapp
+
+# Status
+pm2 status wera-whatsapp
+
+# Restart / stop
+pm2 restart wera-whatsapp
+pm2 stop wera-whatsapp
+```
+
+The app name in PM2 is `wera-whatsapp`. The ecosystem config sets `PORT`, `APP_URL`, and `WHATSAPP_CALLBACK_TOKEN` from the root `.env` (e.g. `WHATSAPP_SERVICE_PORT` or `PORT` for the port).
+
 ## Endpoints
 
 - **GET /qr?session_id=project-1** – JSON: `{ qr?: string, connected?: boolean }`. Call this to get the current QR (data URL) or connection status. Use the same `session_id` as in the project’s WhatsApp settings (e.g. `project-1`).
@@ -54,3 +75,4 @@ Baileys will POST QR and connection status to Laravel, which broadcasts to the F
 ## Laravel config
 
 Set `WHATSAPP_BAILEYS_URL` in Laravel `.env` (e.g. `http://localhost:3000`) so the app can call this service. In Filament, open a project → Edit → "Connect WhatsApp" to show the QR in a modal; session is `project-{id}`.
+is service. In Filament, open a project → Edit → "Connect WhatsApp" to show the QR in a modal; session is `project-{id}`.
